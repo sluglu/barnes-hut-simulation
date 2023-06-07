@@ -12,7 +12,7 @@
 GLContext context;
 simulation simu;
 
-int particleN = 10000;
+int particleN = 100;
 bool pause = false;
 bool saveToImg = false;
 bool showQuad = false;
@@ -77,7 +77,7 @@ void onInput(int key) {
 
 void onDraw() {
 
-    if (!pause) { simu.update(); }
+    if (!pause) { simu.updateGPU(); }
 
     if (saveToImg) { 
         imgCount += 1; 

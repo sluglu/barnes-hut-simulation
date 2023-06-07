@@ -1,0 +1,28 @@
+#version 450 core
+layout (local_size_x = 32, local_size_y = 32, local_size_z = 1) in;
+layout(binding = 0) buffer dataIN
+{
+	vec4 particles[];
+};
+layout(std430, binding = 1) buffer dataOUT
+{
+	vec2 forces[];
+};
+uniform float G;
+uniform float A;
+
+void main(){
+	if(gl_GlobalInvocationID.x != gl_GlobalInvocationID.y && gl_GlobalInvocationID.x < particles.length() && gl_GlobalInvocationID.y < particles.length()){
+		if(particles[gl_GlobalInvocationID.x].w == 0){
+			particles[gl_GlobalInvocationID.x].w = 1;
+			forces[gl_GlobalInvocationID.x] = vec2(0,0);
+		}
+		float r = length(particles[gl_GlobalInvocationID.y].xy - particles[gl_GlobalInvocationID.x].xy);
+		if(r > A){
+			float inverse_r_sqr = pow(1.0f/r, 2.0);
+			vec2 dir = normalize(particles[gl_GlobalInvocationID.y].xy - particles[gl_GlobalInvocationID.x].xy);
+			vec2 force = G * particles[gl_GlobalInvocationID.y].z * particles[gl_GlobalInvocationID.x].z * inverse_r_sqr * dir;
+			forces[gl_GlobalInvocationID.x] += force;
+		}
+	}
+}

@@ -100,6 +100,7 @@ void simulation::calculateForcesGPU() {
     
     for (unsigned int i = 0; i < part.size(); i++) {
         part[i].applyForce(out[i]);
+        std::cout << out[i].x << " | ";
     }
 }
 
