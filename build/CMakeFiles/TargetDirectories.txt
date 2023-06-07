@@ -1,3 +1,0 @@
-C:/Users/eliot/Documents/programme/barnes-hutt/barnes-hutt v2 vs/build/CMakeFiles/opengl-barnes-hutt.dir
-C:/Users/eliot/Documents/programme/barnes-hutt/barnes-hutt v2 vs/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/eliot/Documents/programme/barnes-hutt/barnes-hutt v2 vs/build/CMakeFiles/ZERO_CHECK.dir
