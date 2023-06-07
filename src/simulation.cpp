@@ -55,7 +55,7 @@ void simulation::calculateForcesThread() {
 
 
 void simulation::createBuffer() {
-    shader = ComputeShader("C:/Users/eliot/Documents/programme/barnes-hutt v2 vs/barnes-hutt v2 vs/src/computeShader.comp");
+    shader = ComputeShader("../shader/computeShader.comp");
 
     int sizeInBytesIN = sizeof(vec4) * part.size() + 1;
     int sizeInBytesOUT = sizeof(vec2) * part.size();
@@ -100,7 +100,6 @@ void simulation::calculateForcesGPU() {
     
     for (unsigned int i = 0; i < part.size(); i++) {
         part[i].applyForce(out[i]);
-        std::cout << out[i].x << " | ";
     }
 }
 

@@ -44,6 +44,9 @@
     <CustomBuild Include="C:\Users\eliot\Documents\programme\barnes-hutt\barnes-hutt v2 vs\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="C:\Users\eliot\Documents\programme\barnes-hutt\barnes-hutt v2 vs\shader\computeShader.comp" />
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Header Files">
       <UniqueIdentifier>{E11F4A29-0595-300B-8A83-45C48B2F8778}</UniqueIdentifier>
     </Filter>

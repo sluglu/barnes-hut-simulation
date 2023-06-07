@@ -325,6 +325,8 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="C:\Users\eliot\Documents\programme\barnes-hutt\barnes-hutt v2 vs\include\particle.h" />
     <ClInclude Include="C:\Users\eliot\Documents\programme\barnes-hutt\barnes-hutt v2 vs\include\quad.h" />
     <ClInclude Include="C:\Users\eliot\Documents\programme\barnes-hutt\barnes-hutt v2 vs\include\simulation.h" />
+    <None Include="C:\Users\eliot\Documents\programme\barnes-hutt\barnes-hutt v2 vs\shader\computeShader.comp">
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="C:\Users\eliot\Documents\programme\barnes-hutt\barnes-hutt v2 vs\build\ZERO_CHECK.vcxproj">

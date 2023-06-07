@@ -59,7 +59,7 @@ void partParameters(particle& p) {
 void applySimParameters(simulation& sim) {
     sim.particleN = particleN;
     sim.blachHole = false;
-    sim.computeOnGpu = false;
+    sim.computeOnGpu = true;
     sim.updateParameters(partParameters);
     
 }
