@@ -8,10 +8,17 @@
 
 
 class simulation {
+private:
 	GLuint buffIN;
 	GLuint buffOUT;
 	ComputeShader shader = ComputeShader();
 	particle p;
+	void updateGPU();
+	void updateCPU();
+	void createQuad();
+	void calculateForcesThread();
+	void calculateForcesGPU();
+	void updateParticles();
 public:
 	int particleN = 100;
 	bool computeOnGpu = false;
@@ -24,16 +31,7 @@ public:
 	particle bHole = particle(true, true, 100000.0f, 5, vec4(255, 255, 255, 255), vec2(0, 0), vec2(0, 0));
 	Quad center = Quad(vec2(-1.0f, 1.0f), vec2(1.0f, -1.0f));
 	void updateParameters(void(*f)(particle&));
-	void createQuad();
-	void calculateForcesThread();
-	void calculateForcesGPU();
-	void updateParticles();
 	void update();
 	void createBuffer();
-	void updateGPU();
-	void updateCPU();
-	void drawQuad();
-	void drawQuad(Quad*);
-	void drawParticle();
-	void drawParticle(particle*);
+	
 };

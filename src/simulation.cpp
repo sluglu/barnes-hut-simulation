@@ -1,6 +1,6 @@
 #include "simulation.h"
 
-
+//TODO : updating in run time
 void simulation::updateParameters(void(*f)(particle&)) {
     part = std::vector<particle>(particleN, p);
     for (particle& p : part) {
@@ -72,6 +72,7 @@ void simulation::createBuffer() {
 } 
 
 void simulation::calculateForcesGPU() {
+    createBuffer();
 
     std::vector<vec4> data = std::vector<vec4>(part.size() + 1, vec4(0, 0, 0, 0));
     std::vector<vec2> out = std::vector<vec2>(part.size(), vec2(0, 0));
@@ -110,7 +111,7 @@ void simulation::updateParticles() {
 }
 
 void simulation::update() {
-    if (computeOnGpu) { updateGPU(); }
+    if (computeOnGpu) { updateGPU();}
     else { updateCPU(); }
 }
 
@@ -132,66 +133,3 @@ void simulation::updateCPU() {
 
 }
 
-void simulation::drawQuad(Quad* q) {
-    glPointSize(1);
-    vec2 topRight = vec2(q->botRight.x, q->topLeft.y);
-    vec2 botLeft = vec2(q->topLeft.x, q->botRight.y);
-    glBegin(GL_LINES);
-    glColor4f(255, 255, 255, 255);
-    glVertex2f(q->topLeft.x, q->topLeft.y);
-    glVertex2f(topRight.x, topRight.y);
-
-    glVertex2f(topRight.x, topRight.y);
-    glVertex2f(q->botRight.x, q->botRight.y);
-
-    glVertex2f(q->botRight.x, q->botRight.y);
-    glVertex2f(botLeft.x, botLeft.y);
-
-    glVertex2f(botLeft.x, botLeft.y);
-    glVertex2f(q->topLeft.x, q->topLeft.y);
-    glEnd();
-    if (q->botRightTree != NULL) {
-        simulation::drawQuad(q->botRightTree);
-    }
-    if (q->topLeftTree != NULL) {
-        simulation::drawQuad(q->topLeftTree);
-    }
-    if (q->botLeftTree != NULL) {
-        simulation::drawQuad(q->botLeftTree);
-    }
-    if (q->topRightTree != NULL) {
-        simulation::drawQuad(q->topRightTree);
-    }
-}
-
-void simulation::drawQuad() {
-    simulation::drawQuad(&center);
-}
-
-
-void  simulation::drawParticle(particle* p) {
-    glPointSize(p->size);
-    if (p->drawMode) {
-        glBegin(GL_POINTS);
-        glColor4f(p->color.x, p->color.y, p->color.z, p->color.w);
-        glVertex2f(p->position.x, p->position.y);
-    }
-    else {
-        glBegin(GL_LINES);
-        glColor4f(p->color.x, p->color.y, p->color.z, p->color.w);
-        glVertex2f(p->position.x, p->position.y);
-        glVertex2f(p->oldPosi.x, p->oldPosi.y);
-    }
-    glEnd();
-    p->oldPosi = p->position;
-}
-
-void simulation::drawParticle() {
-    for (particle& p : part) {
-        simulation::drawParticle(&p);
-    }
-    if (blachHole) {
-        simulation::drawParticle(&bHole);
-    }
-    
-}

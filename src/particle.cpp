@@ -30,6 +30,7 @@ particle::particle() {
 
 void particle::update(){
     if (locked == false){
+        oldPosi = position;
         speed += acceleration;
         if (sqrt(speed.x*speed.x + speed.y*speed.y) > maxSpeed) {
 	        speed = normalize(speed) * maxSpeed;

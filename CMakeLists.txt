@@ -18,3 +18,7 @@ file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
 
 # Add an executable target
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+
+add_subdirectory(barebone-graphic-engine)
+
+target_link_libraries(${PROJECT_NAME} barebone-engine)
