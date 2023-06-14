@@ -1,3 +1,3 @@
-[submodule "barebone-graphic-engine"]
-	path = barebone-graphic-engine
-	url = https://github.com/sluglu/barebone-graphic-engine.git
+[submodule "barebone-graphics-engine"]
+	path = barebone-graphics-engine
+	url = https://github.com/sluglu/barebone-graphics-engine.git
