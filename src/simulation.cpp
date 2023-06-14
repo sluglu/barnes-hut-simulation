@@ -6,8 +6,6 @@ void simulation::updateParameters(void(*f)(particle&)) {
     for (particle& p : part) {
         f(p);
     }
-    if(computeOnGpu){ createBuffer(); }
-    
 }
 
 

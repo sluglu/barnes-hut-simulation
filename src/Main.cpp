@@ -12,7 +12,7 @@
 GLContext context;
 simulation simu;
 
-int particleN = 100;
+int particleN = 10000;
 bool pause = false;
 bool saveToImg = false;
 bool showQuad = false;
@@ -42,11 +42,10 @@ void applyColor(particle& p) {
 }
 
 void partParameters(particle& p) {
-    p.drawMode = false;
     p.locked = false;
     p.edgesReset = false;
     p.maxSpeed = 0.05f;
-    p.mass = float(rand() % 1001);
+    p.mass = float(rand() % 1001 - 200);
     p.size = abs(p.mass*0.004f);
     p.color = vec4(255, 255, 255, 255);
     p.position = vec2(cos(rand()) * 0.9f, sin(rand()) * 0.9f);
@@ -54,12 +53,6 @@ void partParameters(particle& p) {
     //p.speed = vec2(p.position.y * 0.005f, -p.position.x * 0.005f);
     p.acceleration = vec2();
     applyColor(p);
-}
-
-void updateParameters(simulation& sim) {
-    for (particle& p : sim.part) {
-        partParameters(p);
-    }
 }
 
 void drawQuad(const Quad& q, GLContext& context) {
@@ -89,22 +82,12 @@ void drawQuads(const simulation& sim, GLContext& context) {
     drawQuad(sim.center, context);
 }
 
-
-void  drawParticle(const particle& p, GLContext& context) {
-    if (p.drawMode) {
-        context.drawPoint(p.position, p.size, p.color);
-    }
-    else {
-        context.drawLine(p.oldPosi, p.position, p.size, p.color);
-    }
-}
-
 void drawParticles(const simulation& sim, GLContext& context) {
     for (const particle& p : sim.part) {
-        drawParticle(p, context);
+        context.drawPoint(p.position, p.size, p.color);
     }
     if (sim.blachHole) {
-        drawParticle(sim.bHole, context);
+        context.drawPoint(sim.bHole.position, sim.bHole.size, sim.bHole.color);
     }
 
 }
@@ -112,7 +95,6 @@ void drawParticles(const simulation& sim, GLContext& context) {
 
 
 void onDraw(GLContext& context) {
-    //simu.updateParameters(partParameters);
     if (!pause) { simu.update(); }
     
     if (saveToImg) { 
@@ -131,25 +113,27 @@ void onInput(GLContext& context, int key) {
     case GLFW_KEY_F2:context.alpha = !context.alpha; break;
     case GLFW_KEY_F3:showQuad = !showQuad; break;
     case GLFW_KEY_F4:context.fullscreen = !context.fullscreen; break;
+    case GLFW_KEY_F5:simu.computeOnGpu = !simu.computeOnGpu; break;
     default: return;
     }
+}
+
+void initialize(GLContext& context) {
+    simu.particleN = particleN;
+    simu.updateParameters(partParameters);
+    
 }
 
 int main() {
     context.window_name = "barnes-hut";
     context.onDraw = onDraw;
     context.onInput = onInput;
+    context.initialize = initialize;
     context.fullscreen = false;
-    simu.particleN = particleN;
-    simu.blachHole = false;
-    simu.computeOnGpu = false;
-    updateParameters(simu);
     context.init(1500, 1000);
     return 0;
 }
 
-//TODO : bug flickering alpha (a +10k)
-//TODO : dynamic switch BH/NB
-//TODO : bug BH/NB at 10k mauvaise dir
+//TODO : bug BH/NB at 10k mauvaise dir avec mass negative
 //TODO : sim/simu structure a refaire
-//todo : probleme GPU
+//TODO : runtime particleN updating + create buffer call one time

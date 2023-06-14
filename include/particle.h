@@ -6,8 +6,7 @@ using namespace glm;
 class particle{
     public:
         particle();
-        particle(bool, bool, float, float, vec4, vec2, vec2);
-        bool drawMode;
+        particle(bool, float, float, vec4, vec2, vec2);
         bool locked;
         bool edgesReset;
         float maxSpeed;

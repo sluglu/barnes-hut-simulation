@@ -1,7 +1,6 @@
 #include "particle.h"
 
-particle::particle(bool d, bool l, float m, float s, vec4 c, vec2 p, vec2 sp) {
-    drawMode = d;
+particle::particle(bool l, float m, float s, vec4 c, vec2 p, vec2 sp) {
     locked = l;
     edgesReset = false;
     maxSpeed = 0.05f;
@@ -15,7 +14,6 @@ particle::particle(bool d, bool l, float m, float s, vec4 c, vec2 p, vec2 sp) {
 }
 
 particle::particle() {
-    drawMode = true;
     locked = false;
     edgesReset = false;
     maxSpeed = 0.05f;
