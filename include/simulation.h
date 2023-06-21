@@ -13,15 +13,11 @@ private:
 	GLuint buffOUT;
 	ComputeShader shader = ComputeShader();
 	particle p;
-	void updateGPU();
-	void updateCPU();
 	void createQuad();
 	void calculateForcesThread();
-	void calculateForcesGPU();
 	void updateParticles();
 public:
 	int particleN = 100;
-	bool computeOnGpu = false;
 	bool blachHole = false;
 	const float G = 0.00000000006743f;
 	const float theta = 0.5f;
@@ -32,6 +28,9 @@ public:
 	Quad center = Quad(vec2(-1.0f, 1.0f), vec2(1.0f, -1.0f));
 	void updateParameters(void(*f)(particle&));
 	void update();
-	void createBuffer();
+	//bool computeOnGpu = false;
+	//void createBuffer();
+	//void updateGPU();
+	//void calculateForcesGPU();
 	
 };

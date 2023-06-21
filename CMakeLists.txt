@@ -4,6 +4,8 @@ project(opengl-barnes-hutt)
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 11)
 
+set(GUI_TYPE WIN32)
+
 # Include directories
 include_directories(include)
 
@@ -17,8 +19,8 @@ file(GLOB SHADER_FILES shader/*.comp)
 file(GLOB_RECURSE SOURCE_FILES src/*.cpp)
 
 # Add an executable target
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
+add_executable(${PROJECT_NAME} ${GUI_TYPE} ${SOURCE_FILES} ${HEADER_FILES} ${SHADER_FILES})
 
-add_subdirectory(barebone-graphics-engine)
+add_subdirectory(barebone-engine)
 
 target_link_libraries(${PROJECT_NAME} barebone-engine)
