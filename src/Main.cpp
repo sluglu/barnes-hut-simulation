@@ -10,7 +10,6 @@
 
 simulation simu;
 
-int particleN = 10000;
 bool pause = false;
 bool saveToImg = false;
 bool showQuad = false;
@@ -41,9 +40,6 @@ void applyColor(particle& p) {
 }
 
 void partParameters(particle& p) {
-    p.locked = false;
-    p.edgesReset = false;
-    p.maxSpeed = 0.05f;
     p.mass = float(rand() % 1001);
     p.size = abs(p.mass*0.004f);
     p.color = vec4(255, 255, 255, 255);
@@ -94,7 +90,7 @@ void drawParticles(const simulation& sim) {
 
 
 void Draw() {
-    if (!pause) { simu.update(); }
+    if (!pause) { simu.updateParameters(partParameters); simu.update(); }
     
     if (saveToImg) { 
         imgCount += 1; 
@@ -116,21 +112,58 @@ void Input(int key) {
     }
 }
 
-void init() {
-    simu.particleN = particleN;
-    simu.updateParameters(partParameters);
-    
+
+//int particleN = 0;
+//bool blachHole = false;
+//const float G = 0.00000000006743f;
+//const float theta = 0.5f;
+//const float minQuad = 0.02f;
+//particle bHole = particle(true, 100000.0f, 5, vec4(255, 255, 255, 255), vec2(0, 0), vec2(0, 0));
+
+//bool pause = false;
+//bool saveToImg = false;
+//bool showQuad = false;
+//bool showParticle = true;
+//int imgCount = 0;
+
+//parameter that affect next spawning particle
+//bool locked;
+//bool edgesReset;
+//float maxSpeed;
+//float mass;
+//float size;
+//vec4 color;
+//vec2 position;
+//vec2 oldPosi;
+//vec2 speed;
+//vec2 acceleration;
+
+void Ui() {
+    ImGui::Begin("Parameters");
+    ImGui::InputInt("Particles number", &simu.particleN);
+    if (ImGui::Button("BlackHole")) { simu.blachHole = !simu.blachHole; }
+    if (ImGui::Button("Pause")) { pause = !pause; }
+    if (ImGui::Button("Screenshot")){
+        imgCount += 1;
+        string filePath = string("C:/Users/eliot/Desktop/test/") + to_string(imgCount) + ".png";
+        //const char* filePath = n.c_str();
+        TakeScreenshot(filePath);
+    }
+    if (ImGui::Button("Show quad")) { showQuad = !showQuad; }
+    if (ImGui::Button("Show particles")) { showParticle = !showParticle; }
+    ImGui::End();
+
 }
 
 int WinMain() {
     window_name = "barnes-hut";
     onDraw = Draw;
     onInput = Input;
-    initialize = init;
-    fullscreen = false;
+    onDrawUI = Ui;
     init(1500, 1000);
     return 0;
 }
 
 //TODO : sim/simu structure a refaire
-//TODO : Parameter GUI
+//TODO : Parameters GUI
+//TODO : bug drawing quads

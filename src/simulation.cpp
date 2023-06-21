@@ -2,9 +2,19 @@
 
 //TODO : updating in run time
 void simulation::updateParameters(void(*f)(particle&)) {
-    part = std::vector<particle>(particleN, p);
-    for (particle& p : part) {
-        f(p);
+    if (particleNupdate < particleN) {
+        while (particleNupdate < particleN) {
+            particle p;
+            f(p);
+            part.push_back(p);
+            particleNupdate++;
+        }
+    }
+    else if (particleNupdate > particleN) {
+        while (particleNupdate > particleN) {
+            part.pop_back();
+            particleNupdate--;
+        }
     }
 }
 
