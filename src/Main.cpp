@@ -15,7 +15,7 @@ bool saveToImg = false;
 bool showQuad = false;
 bool showParticle = true;
 
-int imgCount = 0;
+string message = " ";
 
 using namespace GLContext;
 
@@ -90,14 +90,8 @@ void drawParticles(const simulation& sim) {
 
 
 void Draw() {
-    if (!pause) { simu.updateParameters(partParameters); simu.update(); }
-    
-    if (saveToImg) { 
-        imgCount += 1; 
-        string filePath = string("C:/Users/eliot/Desktop/test/") + to_string(imgCount) + ".png";
-        //const char* filePath = n.c_str();
-        TakeScreenshot(filePath); 
-    }
+    simu.updateParameters(partParameters);
+    if (!pause) { simu.update(); }
     if (showQuad) { drawQuads(simu); }
     if (showParticle) { drawParticles(simu); } 
 }
@@ -113,18 +107,8 @@ void Input(int key) {
 }
 
 
-//int particleN = 0;
-//bool blachHole = false;
-//const float G = 0.00000000006743f;
-//const float theta = 0.5f;
-//const float minQuad = 0.02f;
 //particle bHole = particle(true, 100000.0f, 5, vec4(255, 255, 255, 255), vec2(0, 0), vec2(0, 0));
 
-//bool pause = false;
-//bool saveToImg = false;
-//bool showQuad = false;
-//bool showParticle = true;
-//int imgCount = 0;
 
 //parameter that affect next spawning particle
 //bool locked;
@@ -140,22 +124,74 @@ void Input(int key) {
 
 void Ui() {
     ImGui::Begin("Parameters");
-    ImGui::InputInt("Particles number", &simu.particleN);
-    if (ImGui::Button("BlackHole")) { simu.blachHole = !simu.blachHole; }
-    if (ImGui::Button("Pause")) { pause = !pause; }
-    if (ImGui::Button("Screenshot")){
-        imgCount += 1;
-        string filePath = string("C:/Users/eliot/Desktop/test/") + to_string(imgCount) + ".png";
-        //const char* filePath = n.c_str();
-        TakeScreenshot(filePath);
+
+    //General
+    ImGui::Text("General");
+    ImGui::Spacing();
+
+    ImGui::Checkbox("Show quad", &showQuad);
+
+    ImGui::Checkbox("Show particles", &showParticle);
+
+    ImGui::Checkbox("Alpha blending", &alpha);
+
+    ImGui::Checkbox("Pause", &pause);
+
+    if (ImGui::Button("Screenshot")) {
+        message = TakeScreenshot();
     }
-    if (ImGui::Button("Show quad")) { showQuad = !showQuad; }
-    if (ImGui::Button("Show particles")) { showParticle = !showParticle; }
+    ImGui::Text(message.c_str());
+
+    ImGui::Spacing();
+    ImGui::Separator();
+
+    //Simulation
+    ImGui::Text("Simulation");
+    ImGui::Spacing();
+
+    ImGui::InputInt("Particles number", &simu.particleN);
+
+    ImGui::InputFloat("Constant G", &simu.G, 0.0f, 1.0f, "%.20f");
+    if (ImGui::Button("Reset G")) simu.G = 0.00000000006743f;
+
+    ImGui::InputFloat("Simulation precision", &simu.theta);
+    if (ImGui::Button("Reset precision")) simu.theta = 0.5f;
+
+    ImGui::InputFloat("Quad minimum size", &simu.minQuad);
+    if (ImGui::Button("Reset minimum size")) simu.minQuad = 0.02f;
+
+    ImGui::Spacing();
+    ImGui::Separator();
+
+    //Particle
+    ImGui::Text("Particle");
+    ImGui::Spacing();
+
+
+
+    ImGui::Spacing();
+    ImGui::Separator();
+
+    //Black Hole
+    ImGui::Text("Black Hole");
+    ImGui::Spacing();
+
+    ImGui::Checkbox("Enable black hole", &simu.blachHole);
+
+
+    
+    
+    
+
+    //Particles
+
+
+
     ImGui::End();
 
 }
 
-int WinMain() {
+int __stdcall WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, char* szCmdLine, int iCmdShow) {
     window_name = "barnes-hut";
     onDraw = Draw;
     onInput = Input;
@@ -167,3 +203,6 @@ int WinMain() {
 //TODO : sim/simu structure a refaire
 //TODO : Parameters GUI
 //TODO : bug drawing quads
+//TODO : clamp parameters
+//TODO : updating structure
+//TODO : explication paramettre (mouse temp window)

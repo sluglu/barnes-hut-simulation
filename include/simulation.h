@@ -20,9 +20,9 @@ private:
 public:
 	int particleN = 0;
 	bool blachHole = false;
-	const float G = 0.00000000006743f;
-	const float theta = 0.5f;
-	const float minQuad = 0.02f;
+	float G = 0.00000000006743f;
+	float theta = 0.5f;
+	float minQuad = 0.02f;
 	std::vector<particle> part = std::vector<particle>(particleN, p);
 	particle bHole = particle(true, 100000.0f, 5, vec4(255, 255, 255, 255), vec2(0, 0), vec2(0, 0));
 	Quad center = Quad(vec2(-1.0f, 1.0f), vec2(1.0f, -1.0f));
