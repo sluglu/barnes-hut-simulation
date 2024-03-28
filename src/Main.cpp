@@ -19,6 +19,8 @@ string message = " ";
 
 using namespace GLContext;
 
+
+
 std::tuple<int, int, int> valueToRGB(double value) {
     double r, g, b;
     if (value < 0.5) {
@@ -39,15 +41,36 @@ void applyColor(particle& p) {
     p.color = vec4(get<0>(color), get<1>(color), get<2>(color), 1);
 }
 
+bool randomMass = true;
+float mass = 1.0f;
+bool sizeEqualToMass = true;
+float pSize = 1.0f;
+float radialInitialVelocity = 1.0f;
+vec4 pColor = vec4(255, 255, 255, 255);
+
 void partParameters(particle& p) {
-    p.mass = float(rand() % 1001);
-    p.size = abs(p.mass*0.004f);
-    p.color = vec4(255, 255, 255, 255);
+    if (randomMass) {
+        p.mass = float(rand() % 1001);
+    }
+    else {
+        p.mass = mass;
+    }
+    if (sizeEqualToMass) {
+        p.size = abs(p.mass * 0.004f);
+    }
+    else {
+        p.size = pSize;
+    }
+    p.color = pColor;
     p.position = vec2(cos(rand()) * 0.9f, sin(rand()) * 0.9f);
     p.oldPosi = p.position;
-    //p.speed = vec2(p.position.y * 0.005f, -p.position.x * 0.005f);
+    p.speed = radialInitialVelocity*vec2(p.position.y * 0.005f, -p.position.x * 0.005f);
     p.acceleration = vec2();
-    applyColor(p);
+    //applyColor(p);
+}
+
+void reset() {
+    simu.part.clear();
 }
 
 void drawQuad(const Quad& q) {
@@ -167,6 +190,13 @@ void Ui() {
     ImGui::Text("Particle");
     ImGui::Spacing();
 
+    ImGui::Checkbox("Random Mass", &randomMass);
+    ImGui::InputFloat("Particles Mass", &mass);
+    ImGui::Checkbox("Size Equal To Mass", &sizeEqualToMass);
+    ImGui::InputFloat("Particles Size", &pSize);
+    ImGui::InputFloat("Radial Initial Velocity", &radialInitialVelocity);
+    ImGui::ColorEdit4("Particles Color", &pColor[0]);
+
 
 
     ImGui::Spacing();
@@ -177,6 +207,10 @@ void Ui() {
     ImGui::Spacing();
 
     ImGui::Checkbox("Enable black hole", &simu.blachHole);
+
+    if (ImGui::Button("Reset")) {
+        reset();
+    }
 
 
     

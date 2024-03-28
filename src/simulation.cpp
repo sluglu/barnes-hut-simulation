@@ -1,20 +1,19 @@
 #include "simulation.h"
 
+
+
+
 //TODO : updating in run time
 void simulation::updateParameters(void(*f)(particle&)) {
-    if (particleNupdate < particleN) {
-        while (particleNupdate < particleN) {
-            particle p;
-            f(p);
-            part.push_back(p);
-            particleNupdate++;
-        }
+    while (part.size() < particleN) {
+        particle p;
+        f(p);
+        part.push_back(p);
+        particleNupdate++;
     }
-    else if (particleNupdate > particleN) {
-        while (particleNupdate > particleN) {
-            part.pop_back();
-            particleNupdate--;
-        }
+    while (part.size() > particleN) {
+        part.pop_back();
+        particleNupdate--;
     }
 }
 
